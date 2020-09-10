@@ -1,7 +1,7 @@
-"**************************************************************"
-"    ************---------PYTURION--------***************"
-"    Python tool for accessing and administering multiple "
-"         linux servers quickly and efficiently"
+"***************************************************************"
+"    ************---------PYTURION--------***************       "
+"    Python tool for accessing and administering multiple       "
+"         linux servers quickly and efficiently                 "
 "***************************************************************"
 
 #!/usr/bin/env python3
@@ -18,8 +18,7 @@ import argparse
 
 
 def main(args):
-    for a in args:
-        argparse.
+    print(args)
 
 
 if __name__ == "__main__":
