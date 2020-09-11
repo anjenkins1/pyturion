@@ -34,7 +34,7 @@ def get_server_file():
     serverListFile.close()
     return SERVERS
 
-def add_server_to_file(server):
+def save_servers_to_file():
     serverListFile = open("serverList.txt", "w")
     
     for x in SERVERS:
@@ -43,6 +43,7 @@ def add_server_to_file(server):
     serverListFile.write(server + "\n")
     serverListFile.close()
 
+def 
 def main(args):
     if (args.list_servers): 
         print (SERVERS)
