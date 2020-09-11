@@ -43,11 +43,18 @@ def save_servers_to_file():
     serverListFile.write(server + "\n")
     serverListFile.close()
 
-def 
+def add_server(server):
+    SERVERS.append(server)
+
 def main(args):
     if (args.list_servers): 
         print (SERVERS)
     
+    if args.collection:
+        for x in args.collection:
+            add_server(x)
+    
+    print(SERVERS)
     print(args)
 
 
