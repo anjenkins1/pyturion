@@ -1,4 +1,1 @@
 what1.byu.edu
-what2.byu.edu
-thing1.byu.edu
-thing2.byu.edu

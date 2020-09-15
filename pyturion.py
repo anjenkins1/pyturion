@@ -19,6 +19,7 @@ import argparse
 import paramiko
 import getpass
 import time
+import ssh_commands
 
 SERVERS = []
 PASSWORDS = []
@@ -75,6 +76,10 @@ def command_ssh(username):
         elif (user_input == 'add_user'):
             add_user(username)
             break
+        
+        elif (user_input == 'remove_user'):
+            remove_user(username)
+            break
 
         for i in range(len(SERVERS)):
             print(SERVERS[i], " ", username)
@@ -96,32 +101,28 @@ def command_ssh(username):
     output_File.close()
 
 def add_user(username):
+    new_password = '1' 
+    new_password2 = '2'
+
     new_username = input("Please enter the username of the new user: \n")
-    new_password = getpass.getpass("Please enter that dude's password: \n")
-
-    #THIS IS BROKEN AND IT CAUSES AN INFINITE LOOP
+    
+    while (new_password != new_password2):
+        new_password = getpass.getpass("Please enter their password: \n")
+        new_password2 = getpass.getpass("Confirm the password: \n")
+    
     for i in range(len(SERVERS)):
-        print(SERVERS[i], " ", username)
+        print("Adding " + new_username + " to " + SERVERS[i])
+        ssh = ssh_commands.SSH(SERVERS[i], username, PASSWORDS[i])
+        ssh.add_user(new_username, new_password, PASSWORDS[i])
 
-        ssh = paramiko.SSHClient()
-        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+def remove_user(username):
 
-        ssh.connect(SERVERS[i], "22", username, PASSWORDS[i])
+    user_to_delete = input("Please enter the username of the user to delete: \n")
 
-        stdin, stdout, stderr = ssh.exec_command("sudo su", get_pty=True)
-        stdin.write(PASSWORDS[i] + '\n')
-        ssh.exec_command("useradd " + new_username)
-        ssh.exec_command("passwd " + new_username)
-        ssh.exec_command(new_password)
-        ssh.exec_command(new_password)
-
-        for line in stdout:
-            print(line)
-
-        time.sleep(5)
-        ssh.close()
-
-
+    for i in range(len(SERVERS)):
+        print("Removing " + user_to_delete + " from " + SERVERS[i])
+        ssh = ssh_commands.SSH(SERVERS[i], username, PASSWORDS[i])
+        ssh.remove_user(user_to_delete, PASSWORDS[i])
 
 def main(args):
     get_server_file()
