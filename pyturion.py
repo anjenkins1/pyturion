@@ -80,25 +80,24 @@ def command_ssh(username):
         elif (user_input == 'remove_user'):
             remove_user(username)
             break
+        else:
+            for i in range(len(SERVERS)):
+                print(SERVERS[i], " ", username)
 
-        for i in range(len(SERVERS)):
-            print(SERVERS[i], " ", username)
+                ssh = paramiko.SSHClient()
+                ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
-            ssh = paramiko.SSHClient()
-            ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+                ssh.connect(SERVERS[i], "22", username, PASSWORDS[i])
+                stdin, stdout, stderr = ssh.exec_command(user_input)
+                lines = stdout.readlines()
+                time.sleep(5)
+                ssh.close()
 
-            ssh.connect(SERVERS[i], "22", username, PASSWORDS[i])
-            stdin, stdout, stderr = ssh.exec_command(user_input)
-            lines = stdout.readlines()
-            time.sleep(5)
-            ssh.close()
-
-            for line in lines:
-                str(line)
-            output_File.write("\n" + SERVERS[i] + "\n\n")
-            output_File.writelines(lines)
-        
-    output_File.close()
+                for line in lines:
+                    str(line)
+                output_File.write("\n" + SERVERS[i] + "\n\n")
+                output_File.writelines(lines)        
+            output_File.close()
 
 def add_user(username):
     new_password = '1' 
